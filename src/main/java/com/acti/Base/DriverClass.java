@@ -6,12 +6,16 @@ import java.util.Properties;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 
 
 
 public class DriverClass {
 
-	public static WebDriver driver;
+	public WebDriver driver;
 	public Properties prop;
 	
 	public DriverClass()
@@ -20,7 +24,7 @@ public class DriverClass {
 	{
 		 File config = new File("./Configuration/config.properties");
 		 FileInputStream fis = new FileInputStream(config);
-		  Properties prop = new Properties();
+		  prop = new Properties();
 		  prop.load(fis);
 		  
 	}
@@ -31,12 +35,22 @@ public class DriverClass {
 		
 	}
 	
+	
 	public void getdriver()
 	{
-		  String URL = prop.getProperty("Url");
+		  String B = prop.getProperty("Browser");
+		if(B.equalsIgnoreCase("Chrome"))
+		{
 		System.setProperty("webdriver.chrome.driver", "./Browsers/chromedriver.exe");
 		driver = new ChromeDriver();
+		}
+		else if(B.equalsIgnoreCase("Firefox"))
+		{
+			System.setProperty("webdriver.gecko.driver", "./Browsers/geckodriver.exe");
+			driver = new FirefoxDriver();
+		}
 		
+		String URL = prop.getProperty("url");
 		driver.get(URL);
 	}
 	

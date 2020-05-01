@@ -1,22 +1,19 @@
 package com.acti.Base;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-
 
 
 public class DriverClass {
 
-	public WebDriver driver;
-	public Properties prop;
+	public static WebDriver driver;
+	public static Properties prop;
 	
 	public DriverClass()
 	{
@@ -35,10 +32,9 @@ public class DriverClass {
 		
 	}
 	
-	
-	public void getdriver()
+	public void initApp()
 	{
-		  String B = prop.getProperty("Browser");
+		  String B = prop.getProperty("Browser1");
 		if(B.equalsIgnoreCase("Chrome"))
 		{
 		System.setProperty("webdriver.chrome.driver", "./Browsers/chromedriver.exe");
@@ -50,6 +46,10 @@ public class DriverClass {
 			driver = new FirefoxDriver();
 		}
 		
+		driver.manage().window().maximize();
+		driver.manage().deleteAllCookies();
+		driver.manage().timeouts().pageLoadTimeout(50, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		String URL = prop.getProperty("url");
 		driver.get(URL);
 	}
